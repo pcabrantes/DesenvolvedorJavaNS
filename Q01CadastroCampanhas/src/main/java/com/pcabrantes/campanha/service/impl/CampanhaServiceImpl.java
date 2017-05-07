@@ -54,6 +54,22 @@ public class CampanhaServiceImpl implements CampanhaService {
         return new MessageResponse(HttpStatus.OK, result);
     }
 
+    @Override
+    public MessageResponse remover(Long id) throws Exception {
+        Campanha campanha = campanhaRepository.findOne(id);
+
+        if (campanha == null) {
+            throw new RecursoNaoExistenteException();
+        }
+
+        campanha.setDataAtualizacao(new Date());
+        campanha.setAtivo(false);
+
+        campanhaRepository.save(campanha);
+
+        return new MessageResponse(HttpStatus.OK);
+    }
+
     private List<Campanha> prepararSalvar(Campanha campanha, Integer operacao) throws RecursoNaoExistenteException {
 
         if (campanha == null || StringUtils.isEmpty(campanha.getNome()) || StringUtils.isEmpty(campanha.getIdTimeCoracao())

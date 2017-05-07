@@ -98,7 +98,7 @@ public class CampanhaController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/campanha/{id}")
     public MessageResponse remover(@PathVariable(value = "id") Long id) throws Exception {
         logger.info("Serviço iniciado: DELETE /campanha/{" + id + "}");
-        return null;
+        return campanhaService.remover(id);
     }
 
     /**

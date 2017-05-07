@@ -15,4 +15,5 @@ public interface CampanhaService {
 
     MessageResponse salvar(CampanhaDTO campanhaDTO, Integer operacao) throws Exception;
     MessageResponse consultar() throws Exception;
+    MessageResponse remover(Long id) throws Exception;
 }
