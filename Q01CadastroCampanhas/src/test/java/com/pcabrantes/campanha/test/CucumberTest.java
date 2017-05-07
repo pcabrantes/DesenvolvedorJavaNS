@@ -10,7 +10,8 @@ import org.junit.runner.RunWith;
  * @author Paulo Cesar Abrantes
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features", tags = "@CadastrarCampanhaTest", glue = "com.pcabrantes.campanha.test.service")
+@CucumberOptions(features = "src/test/resources/features",
+        glue = "com.pcabrantes.campanha.test.service")
 public class CucumberTest {
 
 }

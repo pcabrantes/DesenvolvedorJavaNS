@@ -44,6 +44,15 @@ public class CampanhaServiceImpl implements CampanhaService {
         return new MessageResponse(HttpStatus.OK, result);
     }
 
+    @Override
+    public MessageResponse consultar() throws Exception {
+        List<Campanha> campanhas = (List<Campanha>) campanhaRepository.findCampanhasVigentes(new Date());
+        List<CampanhaDTO> result = campanhas.parallelStream()
+                .map(CampanhaAdapter::toCampanhaDTO)
+                .collect(Collectors.toList());
+        return new MessageResponse(HttpStatus.OK, result);
+    }
+
     private List<Campanha> prepararSalvar(Campanha campanha) {
 
         if (campanha == null || StringUtils.isEmpty(campanha.getNome()) || StringUtils.isEmpty(campanha.getIdTimeCoracao())

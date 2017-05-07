@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
+
 /**
  * Interface responsável por executar operações no BD referentes a Campanha
  *
@@ -20,4 +22,7 @@ public interface CampanhaRepository extends CrudRepository<Campanha,Long> {
      */
     @Query("select c from Campanha c where c.dataInicial <= :#{#campanha.dataFinal} and c.dataFinal >= :#{#campanha.dataInicial} and c.ativo = true order by c.dataFinal asc")
     Iterable<Campanha> findCampanhasVigencia(@Param("campanha") Campanha campanha);
+
+    @Query("select c from Campanha c where c.dataInicial <= :dataAtual and c.dataFinal >= :dataAtual and c.ativo = true")
+    Iterable<Campanha> findCampanhasVigentes(@Param("dataAtual") Date dataAtual);
 }

@@ -23,7 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author Paulo Cesar Abrantes
  */
-@RestController(value = "/campanha")
+@RestController
 public class CampanhaController {
 
     private final Logger logger = getLogger(this.getClass());
@@ -39,7 +39,7 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/campanha/cadastrar")
     public MessageResponse cadastrar(@RequestBody CampanhaDTO campanha) throws Exception {
         logger.info("Serviço iniciado: POST /campanha");
         logger.info("RequestBody: " + campanha);
@@ -68,10 +68,10 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/campanhas")
     public MessageResponse consultar() throws Exception {
         logger.info("Serviço iniciado: GET /campanha");
-        return null;
+        return campanhaService.consultar();
     }
 
     /**
@@ -81,7 +81,7 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/campanha/{id}")
     public MessageResponse consultar(@PathVariable(value = "id") Long id) throws Exception {
         logger.info("Serviço iniciado: GET /campanha/{" + id + "}");
         return null;
@@ -94,7 +94,7 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/campanha/{id}")
     public MessageResponse remover(@PathVariable(value = "id") Long id) throws Exception {
         logger.info("Serviço iniciado: DELETE /campanha/{" + id + "}");
         return null;
@@ -124,5 +124,18 @@ public class CampanhaController {
     public MessageResponse handlerBadRequest(ParseException ex) {
         logger.error(ex.getMessage(), ex);
         return new MessageResponse(HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Método utilizado para tratar exceções quando acontecer um erro inesperado
+     *
+     * @param ex
+     * @return Um json no seguinte formato:
+     */
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public MessageResponse handlerBadRequest(NullPointerException ex) {
+        logger.error(ex.getMessage(), ex);
+        return new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

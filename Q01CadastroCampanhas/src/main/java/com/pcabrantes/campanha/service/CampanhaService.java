@@ -11,4 +11,5 @@ import com.pcabrantes.campanha.util.response.MessageResponse;
 public interface CampanhaService {
 
     MessageResponse salvar(CampanhaDTO campanhaDTO) throws Exception;
+    MessageResponse consultar() throws Exception;
 }

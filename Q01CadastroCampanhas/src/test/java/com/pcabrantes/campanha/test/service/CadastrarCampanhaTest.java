@@ -26,7 +26,6 @@ public class CadastrarCampanhaTest extends SpringTest {
 
     private CampanhaDTO dto = null;
     private MessageResponse response = null;
-    private boolean contextoExecutado = false;
     private Exception excecao = null;
 
     @Dado("^que é informado o nome \"([^\"]*)\", o Time (\\d+) e a vigência de \"([^\"]*)\" a \"([^\"]*)\"$")
