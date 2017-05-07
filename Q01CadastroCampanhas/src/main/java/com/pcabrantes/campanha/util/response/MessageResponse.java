@@ -1,5 +1,11 @@
 package com.pcabrantes.campanha.util.response;
 
+import com.pcabrantes.campanha.util.Mensagens;
+import com.pcabrantes.campanha.util.dto.CampanhaDTO;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
 /**
  * Classe que representa uma resposta dos serviços REST
  *
@@ -9,7 +15,19 @@ public class MessageResponse {
 
     private Integer codigo;
     private String mensagem;
-    private Object dados;
+    private List<CampanhaDTO> dados;
+
+    public MessageResponse() {}
+
+    public MessageResponse(HttpStatus status) {
+        this.codigo = status.value();
+        this.mensagem = Mensagens.MENSAGENS_HTTP.get(status);
+    }
+
+    public MessageResponse(HttpStatus status, List<CampanhaDTO> dados) {
+        this(status);
+        this.setDados(dados);
+    }
 
     public Integer getCodigo() {
         return codigo;
@@ -27,11 +45,11 @@ public class MessageResponse {
         this.mensagem = mensagem;
     }
 
-    public Object getDados() {
+    public List<CampanhaDTO> getDados() {
         return dados;
     }
 
-    public void setDados(Object dados) {
+    public void setDados(List<CampanhaDTO> dados) {
         this.dados = dados;
     }
 }

@@ -1,10 +1,5 @@
 package com.pcabrantes.campanha.util.dto;
 
-import javax.persistence.Id;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-
 /**
  * Classe que representa o objeto JSON da campanha usada na requisição/resposta dos serviços
  *

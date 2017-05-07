@@ -1,9 +1,20 @@
 package com.pcabrantes.campanha.controller;
 
+import com.pcabrantes.campanha.service.CampanhaService;
 import com.pcabrantes.campanha.util.dto.CampanhaDTO;
 import com.pcabrantes.campanha.util.response.MessageResponse;
 import org.slf4j.Logger;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.text.ParseException;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -17,8 +28,11 @@ public class CampanhaController {
 
     private final Logger logger = getLogger(this.getClass());
 
+    @Autowired
+    private CampanhaService campanhaService;
+
     /**
-     * Método utilizado para cadastrar uma nova campanha
+     * Método utilizado para salvar uma nova campanha
      *
      * @param campanha Objeto Campanha no formato json
      * @return Um json informando o sucesso da operação
@@ -29,11 +43,11 @@ public class CampanhaController {
     public MessageResponse cadastrar(@RequestBody CampanhaDTO campanha) throws Exception {
         logger.info("Serviço iniciado: POST /campanha");
         logger.info("RequestBody: " + campanha);
-        return null;
+        return campanhaService.salvar(campanha);
     }
 
     /**
-     * Método utilizado para cadastrar uma nova campanha
+     * Método utilizado para salvar uma nova campanha
      *
      * @param campanha Objeto Campanha no formato json
      * @return Um json informando o sucesso da operação
@@ -67,7 +81,7 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public MessageResponse consultar(@PathVariable(value = "id") Long id) throws Exception {
         logger.info("Serviço iniciado: GET /campanha/{" + id + "}");
         return null;
@@ -80,9 +94,35 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public MessageResponse remover(@PathVariable(value = "id") Long id) throws Exception {
         logger.info("Serviço iniciado: DELETE /campanha/{" + id + "}");
         return null;
+    }
+
+    /**
+     * Método utilizado para tratar exceções quando o json informado não estiver no formato correto
+     *
+     * @param ex
+     * @return Um json no seguinte formato:
+     */
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public MessageResponse handlerBadRequest(IllegalArgumentException ex) {
+        logger.error(ex.getMessage(), ex);
+        return new MessageResponse(HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Método utilizado para tratar exceções quando o json informado não estiver no formato correto
+     *
+     * @param ex
+     * @return Um json no seguinte formato:
+     */
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public MessageResponse handlerBadRequest(ParseException ex) {
+        logger.error(ex.getMessage(), ex);
+        return new MessageResponse(HttpStatus.BAD_REQUEST);
     }
 }
