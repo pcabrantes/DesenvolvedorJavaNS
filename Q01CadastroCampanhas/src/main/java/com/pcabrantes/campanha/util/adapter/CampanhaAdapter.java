@@ -42,6 +42,7 @@ public class CampanhaAdapter {
     public static CampanhaDTO toCampanhaDTO(Campanha campanha) {
 
         final CampanhaDTO dto = new CampanhaDTO();
+        dto.setId(campanha.getId());
         dto.setNome(campanha.getNome());
         dto.setIdTimeCoracao(campanha.getIdTimeCoracao());
 

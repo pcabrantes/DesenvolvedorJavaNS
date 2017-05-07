@@ -5,6 +5,7 @@ import com.pcabrantes.campanha.repository.CampanhaRepository;
 import com.pcabrantes.campanha.service.CampanhaService;
 import com.pcabrantes.campanha.util.adapter.CampanhaAdapter;
 import com.pcabrantes.campanha.util.dto.CampanhaDTO;
+import com.pcabrantes.campanha.util.exception.RecursoNaoExistenteException;
 import com.pcabrantes.campanha.util.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,11 +28,11 @@ public class CampanhaServiceImpl implements CampanhaService {
     private CampanhaRepository campanhaRepository;
 
     @Override
-    public MessageResponse salvar(CampanhaDTO campanhaDTO) throws Exception {
+    public MessageResponse salvar(CampanhaDTO campanhaDTO, Integer operacao) throws Exception {
 
         List<CampanhaDTO> result = new ArrayList<>();
         try {
-            List<Campanha> campanhas = prepararSalvar(CampanhaAdapter.fromCampanhaDTO(campanhaDTO));
+            List<Campanha> campanhas = prepararSalvar(CampanhaAdapter.fromCampanhaDTO(campanhaDTO), operacao);
             campanhaRepository.save(campanhas);
             result = campanhas.parallelStream()
                     .map(CampanhaAdapter::toCampanhaDTO)
@@ -53,11 +54,12 @@ public class CampanhaServiceImpl implements CampanhaService {
         return new MessageResponse(HttpStatus.OK, result);
     }
 
-    private List<Campanha> prepararSalvar(Campanha campanha) {
+    private List<Campanha> prepararSalvar(Campanha campanha, Integer operacao) throws RecursoNaoExistenteException {
 
         if (campanha == null || StringUtils.isEmpty(campanha.getNome()) || StringUtils.isEmpty(campanha.getIdTimeCoracao())
                 || campanha.getDataInicial() == null || campanha.getDataFinal() == null
-                || campanha.getDataInicial().after(campanha.getDataFinal())) {
+                || campanha.getDataInicial().after(campanha.getDataFinal())
+                || (operacao == CampanhaService.ATUALIZAR && (campanha.getId() == null || campanha.getId() == 0L))) {
             throw new IllegalArgumentException();
         }
 
@@ -65,6 +67,19 @@ public class CampanhaServiceImpl implements CampanhaService {
         campanha.setDataAtualizacao(new Date());
 
         List<Campanha> campanhas = (List<Campanha>) campanhaRepository.findCampanhasVigencia(campanha);
+
+        if (operacao.equals(CampanhaService.ATUALIZAR)) {
+
+            if (campanhas.parallelStream()
+                    .filter(c->c.getId().equals(campanha.getId()))
+                    .collect(Collectors.toList()).isEmpty()) {
+                throw new RecursoNaoExistenteException();
+            }
+
+            campanhas = campanhas.parallelStream()
+                    .filter(c->!c.getId().equals(campanha.getId()))
+                    .collect(Collectors.toList());
+        }
 
         if (campanhas != null && !campanhas.isEmpty()) {
 
@@ -112,6 +127,5 @@ public class CampanhaServiceImpl implements CampanhaService {
             novaCampanha.setDataFinal(cal.getTime());
             campanhas.add(novaCampanha);
         }
-
     }
 }

@@ -10,6 +10,9 @@ import com.pcabrantes.campanha.util.response.MessageResponse;
  */
 public interface CampanhaService {
 
-    MessageResponse salvar(CampanhaDTO campanhaDTO) throws Exception;
+    Integer INCLUIR = 1;
+    Integer ATUALIZAR = 2;
+
+    MessageResponse salvar(CampanhaDTO campanhaDTO, Integer operacao) throws Exception;
     MessageResponse consultar() throws Exception;
 }

@@ -37,7 +37,7 @@ public class CadastrarCampanhaTest extends SpringTest {
     @Quando("^é invocado o serviço de cadastro de campanhas$")
     public void é_invocado_o_serviço_de_cadastro_de_campanhas() throws Throwable {
         try {
-            response = campanhaService.salvar(dto);
+            response = campanhaService.salvar(dto, CampanhaService.INCLUIR);
         } catch (Exception ex) {
             excecao = ex;
         }

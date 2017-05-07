@@ -2,6 +2,7 @@ package com.pcabrantes.campanha.controller;
 
 import com.pcabrantes.campanha.service.CampanhaService;
 import com.pcabrantes.campanha.util.dto.CampanhaDTO;
+import com.pcabrantes.campanha.util.exception.RecursoNaoExistenteException;
 import com.pcabrantes.campanha.util.response.MessageResponse;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class CampanhaController {
     public MessageResponse cadastrar(@RequestBody CampanhaDTO campanha) throws Exception {
         logger.info("Serviço iniciado: POST /campanha");
         logger.info("RequestBody: " + campanha);
-        return campanhaService.salvar(campanha);
+        return campanhaService.salvar(campanha, CampanhaService.INCLUIR);
     }
 
     /**
@@ -54,11 +55,11 @@ public class CampanhaController {
      *
      * @throws Exception
      */
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT, value = "/campanha/atualizar")
     public MessageResponse atualizar(@RequestBody CampanhaDTO campanha) throws Exception {
         logger.info("Serviço iniciado: PUT /campanha");
         logger.info("RequestBody: " + campanha);
-        return null;
+        return campanhaService.salvar(campanha, CampanhaService.ATUALIZAR);
     }
 
     /**
@@ -127,6 +128,19 @@ public class CampanhaController {
     }
 
     /**
+     * Método utilizado para tratar exceções ao tentar acessar recursos que não existem
+     *
+     * @param ex
+     * @return Um json no seguinte formato:
+     */
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public MessageResponse handlerNotFound(RecursoNaoExistenteException ex) {
+        logger.error(ex.getMessage(), ex);
+        return new MessageResponse(HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Método utilizado para tratar exceções quando acontecer um erro inesperado
      *
      * @param ex
@@ -134,7 +148,7 @@ public class CampanhaController {
      */
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public MessageResponse handlerBadRequest(NullPointerException ex) {
+    public MessageResponse handlerInternalServerError(NullPointerException ex) {
         logger.error(ex.getMessage(), ex);
         return new MessageResponse(HttpStatus.INTERNAL_SERVER_ERROR);
     }
