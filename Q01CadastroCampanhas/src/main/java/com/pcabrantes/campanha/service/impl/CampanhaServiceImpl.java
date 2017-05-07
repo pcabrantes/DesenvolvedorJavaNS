@@ -55,8 +55,22 @@ public class CampanhaServiceImpl implements CampanhaService {
     }
 
     @Override
+    public MessageResponse consultar(Long id) throws Exception {
+        Campanha campanha = campanhaRepository.findOneAtivo(id);
+
+        if (campanha == null) {
+            throw new RecursoNaoExistenteException();
+        }
+
+        List<CampanhaDTO> result = new ArrayList<>();
+        result.add(CampanhaAdapter.toCampanhaDTO(campanha));
+
+        return new MessageResponse(HttpStatus.OK, result);
+    }
+
+    @Override
     public MessageResponse remover(Long id) throws Exception {
-        Campanha campanha = campanhaRepository.findOne(id);
+        Campanha campanha = campanhaRepository.findOneAtivo(id);
 
         if (campanha == null) {
             throw new RecursoNaoExistenteException();

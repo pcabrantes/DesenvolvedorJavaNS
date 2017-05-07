@@ -3,15 +3,18 @@ package com.pcabrantes.campanha.test.service;
 import com.pcabrantes.campanha.service.CampanhaService;
 import com.pcabrantes.campanha.test.SpringTest;
 import com.pcabrantes.campanha.util.dto.CampanhaDTO;
+import com.pcabrantes.campanha.util.exception.RecursoNaoExistenteException;
 import com.pcabrantes.campanha.util.response.MessageResponse;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Entao;
+import cucumber.api.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -24,7 +27,9 @@ public class ConsultarCampanhasTest extends SpringTest {
     @Autowired
     private CampanhaService campanhaService;
 
+    private Long id = null;
     private MessageResponse response = null;
+    private Exception excecao = null;
 
     @Dado("^que o serviço de consulta é invocado$")
     public void que_o_serviço_de_consulta_é_invocado() throws Throwable {
@@ -49,5 +54,32 @@ public class ConsultarCampanhasTest extends SpringTest {
             }
         });
     }
+
+    @Dado("^que é informada uma campanha com ID (\\d+)$")
+    public void que_é_informada_uma_campanha_com_ID(int id) throws Throwable {
+        this.id = new Long(id);
+    }
+
+    @Quando("^a consulta por ID é invocada$")
+    public void a_consulta_por_ID_é_invocada() throws Throwable {
+        try {
+            response = campanhaService.consultar(id);
+        } catch (Exception ex) {
+            excecao = ex;
+        }
+    }
+
+    @Entao("^apenas o registro consultado é retornado$")
+    public void apenas_o_registro_consultado_é_retornado() throws Throwable {
+        assertEquals(id, response.getDados().get(0).getId());
+        assertEquals(new Integer(1), new Integer(response.getDados().size()));
+    }
+
+    @Entao("^é lançada uma exceção indicando que a campanha não foi encontrada$")
+    public void é_lançada_uma_exceção_indicando_que_a_campanha_não_foi_encontrada() throws Throwable {
+        assertNotNull(excecao);
+        assertTrue(excecao instanceof RecursoNaoExistenteException);
+    }
+
 
 }

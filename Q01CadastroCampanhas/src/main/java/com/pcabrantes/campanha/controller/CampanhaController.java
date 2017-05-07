@@ -85,7 +85,7 @@ public class CampanhaController {
     @RequestMapping(method = RequestMethod.GET, value = "/campanha/{id}")
     public MessageResponse consultar(@PathVariable(value = "id") Long id) throws Exception {
         logger.info("Serviço iniciado: GET /campanha/{" + id + "}");
-        return null;
+        return campanhaService.consultar(id);
     }
 
     /**

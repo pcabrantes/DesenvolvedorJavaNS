@@ -2,7 +2,8 @@
 
   @ConsultarCampanhasTest
   Funcionalidade: Testar a consulta de campanhas
-    O sistema deve prover um serviço para consultar as campanhas cadastradas, retornando apenas as que estão em vigência
+    O sistema deve prover um serviço para consultar as campanhas cadastradas, retornando apenas as que estão em vigência.
+    Caso a consulta seja com base no ID, os dados serão retornados mesmo que a campanha não esteja mais em vigência.
 
   Esquema do Cenario: Inserir campanhas a serem usadas como base nos cenários de teste
     Dado que é informado o nome <nome>, o Time <time> e a vigência de <dataInicial> a <dataFinal>
@@ -21,3 +22,15 @@
     Dado que o serviço de consulta é invocado
     Entao a consulta é executada com sucesso
     E a lista de retorno apresenta apenas campanhas vigentes
+
+
+  Cenario: Consultar uma campanha a partir de um ID
+    Dado que é informada uma campanha com ID 1
+    Quando a consulta por ID é invocada
+    Entao apenas o registro consultado é retornado
+
+
+  Cenario: Consultar uma campanha a partir de um ID inexistente
+    Dado que é informada uma campanha com ID 12345678
+    Quando a consulta por ID é invocada
+    Entao é lançada uma exceção indicando que a campanha não foi encontrada

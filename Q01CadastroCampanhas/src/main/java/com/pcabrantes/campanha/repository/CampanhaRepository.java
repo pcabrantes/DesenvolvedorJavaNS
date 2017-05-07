@@ -25,4 +25,7 @@ public interface CampanhaRepository extends CrudRepository<Campanha,Long> {
 
     @Query("select c from Campanha c where c.dataInicial <= :dataAtual and c.dataFinal >= :dataAtual and c.ativo = true")
     Iterable<Campanha> findCampanhasVigentes(@Param("dataAtual") Date dataAtual);
+
+    @Query("select c from Campanha c where c.id = ? and c.ativo = true")
+    Campanha findOneAtivo(Long id);
 }
