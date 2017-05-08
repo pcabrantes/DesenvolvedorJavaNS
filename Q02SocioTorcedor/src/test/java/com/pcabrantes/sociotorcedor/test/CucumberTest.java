@@ -5,7 +5,7 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 /**
- *
+ * Classe que executa os casos de teste do cucumber
  *
  * @author Paulo Cesar Abrantes
  */

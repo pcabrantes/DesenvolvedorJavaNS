@@ -3,6 +3,7 @@ package com.pcabrantes.sociotorcedor.repository;
 import com.pcabrantes.sociotorcedor.entity.SocioTorcedor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 /**
  * Repository utilizado para comunicação com o BD para SocioTorcedor
@@ -18,7 +19,7 @@ public interface SocioTorcedorRepository extends CrudRepository<SocioTorcedor,Lo
      * @param email
      * @return
      */
-    @Query("select s from SocioTorcedor s where s.email = ? and s.ativo = true")
-    SocioTorcedor findByEmail(String email);
+    @Query("select s from SocioTorcedor s where s.email = :email and s.ativo = true")
+    SocioTorcedor findByEmail(@Param("email") String email);
 
 }
