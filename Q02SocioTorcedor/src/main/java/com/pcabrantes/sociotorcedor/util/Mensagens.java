@@ -22,6 +22,9 @@ public abstract class Mensagens {
         MENSAGENS_HTTP.put(HttpStatus.BAD_REQUEST, "Requisição inválida ou não pôde ser entregue.");
         MENSAGENS_HTTP.put(HttpStatus.NOT_FOUND, "A URL solicitada ou recurso não existe.");
         MENSAGENS_HTTP.put(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno.");
+        MENSAGENS_HTTP.put(HttpStatus.SERVICE_UNAVAILABLE, "O serviço de consulta de campanhas está indisponível.");
     }
+
+
 
 }
