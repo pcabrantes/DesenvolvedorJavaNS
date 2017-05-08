@@ -5,9 +5,11 @@ import com.pcabrantes.sociotorcedor.util.exception.ServicoIndisponivelException;
 import com.pcabrantes.sociotorcedor.util.response.MessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -51,12 +53,14 @@ public class CampanhaClient {
             response =
                     restTemplate.getForObject(CONSULTAR_CAMPANHAS_TIME + idTimeCoracao, MessageResponse.class);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (ResourceAccessException ex1) {
+            ex1.printStackTrace();
             throw new ServicoIndisponivelException();
+        } catch (Exception ex2) {
+            ex2.printStackTrace();
         }
 
-        return response == null || !response.getCodigo().equals(HttpStatus.OK.value()) ? null : response.getDados();
+        return response == null || !response.getCodigo().equals(HttpStatus.OK.value()) ? new ArrayList<>() : response.getDados();
     }
 
 }

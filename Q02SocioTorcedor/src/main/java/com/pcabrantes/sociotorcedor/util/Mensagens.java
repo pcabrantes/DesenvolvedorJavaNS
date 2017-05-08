@@ -25,6 +25,7 @@ public abstract class Mensagens {
         MENSAGENS_HTTP.put(HttpStatus.SERVICE_UNAVAILABLE, "O serviço de consulta de campanhas está indisponível.");
     }
 
+    public static final String TORCEDOR_JA_CADASTRADO = "Torcedor já cadastrado.";
 
 
 }

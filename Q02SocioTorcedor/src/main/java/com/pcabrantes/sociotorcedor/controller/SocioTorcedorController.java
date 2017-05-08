@@ -1,8 +1,10 @@
 package com.pcabrantes.sociotorcedor.controller;
 
+import com.pcabrantes.sociotorcedor.service.SocioTorcedorService;
 import com.pcabrantes.sociotorcedor.util.dto.SocioTorcedorDTO;
 import com.pcabrantes.sociotorcedor.util.response.MessageResponse;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,9 @@ public class SocioTorcedorController {
 
     private final Logger logger = getLogger(this.getClass());
 
+    @Autowired
+    private SocioTorcedorService socioTorcedorService;
+
     /**
      * Método utilizado para cadastrar um novo Sócio Torcedor
      *
@@ -32,7 +37,7 @@ public class SocioTorcedorController {
     public MessageResponse cadastrar(@RequestBody SocioTorcedorDTO socioTorcedorDTO) throws Exception {
         logger.info("Serviço iniciado: POST /sociotorcedor/cadastrar");
         logger.info("RequestBody: " + socioTorcedorDTO);
-        return null;
+        return socioTorcedorService.salvar(socioTorcedorDTO);
     }
 
     /**
