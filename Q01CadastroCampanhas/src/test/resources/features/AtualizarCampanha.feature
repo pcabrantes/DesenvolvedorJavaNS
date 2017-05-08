@@ -12,10 +12,10 @@ Funcionalidade: Atualizar uma campanha cadastrada
 
     Exemplos:
       | nome                        | time | dataInicial   | dataFinal    |
-      | "Manto Sagrado - A"         | 5    | "01/01/2018"  | "02/10/2018" |
-      | "Time do Coração - A"       | 6    | "01/01/2018"  | "01/05/2018" |
-      | "O melhor time é o meu - A" | 7    | "05/05/2018"  | "30/05/2018" |
-      | "Meu time campeão - A"      | 8    | "01/06/2018"  | "30/06/2018" |
+      | "Manto Sagrado - A"         | 5    | "01/01/2017"  | "02/10/2017" |
+      | "Time do Coração - A"       | 6    | "01/01/2017"  | "01/05/2017" |
+      | "O melhor time é o meu - A" | 7    | "05/05/2017"  | "30/05/2017" |
+      | "Meu time campeão - A"      | 8    | "01/06/2017"  | "30/06/2017" |
 
 
   Cenario: Consultar todas as campanhas vigentes, atualizar o nome par adicionar o texto '(Atualizada)' ao final

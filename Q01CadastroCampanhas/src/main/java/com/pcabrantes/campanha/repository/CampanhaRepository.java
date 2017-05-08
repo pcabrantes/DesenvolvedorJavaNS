@@ -15,17 +15,39 @@ import java.util.Date;
 public interface CampanhaRepository extends CrudRepository<Campanha,Long> {
 
     /**
-     * Retorna campanhas que estão na mesma vigência da campanha inforada no parâmetro
+     * Consulta campanhas que estão na mesma vigência da campanha informada no parâmetro
      *
      * @param campanha
-     * @return
+     * @return lista de campanhas em vigencia
      */
-    @Query("select c from Campanha c where c.dataInicial <= :#{#campanha.dataFinal} and c.dataFinal >= :#{#campanha.dataInicial} and c.ativo = true order by c.dataFinal asc")
+    @Query("select c from Campanha c where c.dataInicial <= :#{#campanha.dataFinal} and c.dataFinal >= :#{#campanha.dataInicial} and c.dataFinal >= CURRENT_DATE and c.ativo = true order by c.dataFinal asc")
     Iterable<Campanha> findCampanhasVigencia(@Param("campanha") Campanha campanha);
 
-    @Query("select c from Campanha c where c.dataInicial <= :dataAtual and c.dataFinal >= :dataAtual and c.ativo = true")
-    Iterable<Campanha> findCampanhasVigentes(@Param("dataAtual") Date dataAtual);
+    /**
+     * Consulta campanhas que estão vigentes em determinada data
+     *
+     * @return lista de campanhas vigentes em determinada data
+     */
+    @Query("select c from Campanha c where c.dataInicial <= CURRENT_DATE and c.dataFinal >= CURRENT_DATE and c.ativo = true")
+    Iterable<Campanha> findCampanhasVigentes();
 
+
+    /**
+     * Consulta campanhas que estão vigentes em determinada data associadas ao time informado
+     *
+     * @param idTime
+     * @return lista de campanhas vigentes em determinada data associadas ao time
+     */
+    @Query("select c from Campanha c where c.idTimeCoracao = :idTime and c.dataInicial <= CURRENT_DATE and c.dataFinal >= CURRENT_DATE and c.ativo = true")
+    Iterable<Campanha> findCampanhasVigentesTime(@Param("idTime") Integer idTime);
+
+
+    /**
+     * Consulta uma campanha por id
+     *
+     * @param id
+     * @return campanha ativa associada ao id informado
+     */
     @Query("select c from Campanha c where c.id = ? and c.ativo = true")
     Campanha findOneAtivo(Long id);
 }

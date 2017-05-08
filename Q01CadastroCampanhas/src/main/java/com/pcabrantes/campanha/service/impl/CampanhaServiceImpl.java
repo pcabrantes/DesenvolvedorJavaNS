@@ -34,7 +34,7 @@ public class CampanhaServiceImpl implements CampanhaService {
         try {
             List<Campanha> campanhas = prepararSalvar(CampanhaAdapter.fromCampanhaDTO(campanhaDTO), operacao);
             campanhaRepository.save(campanhas);
-            result = campanhas.parallelStream()
+            result = campanhas.stream()
                     .map(CampanhaAdapter::toCampanhaDTO)
                     .collect(Collectors.toList());
 
@@ -47,15 +47,22 @@ public class CampanhaServiceImpl implements CampanhaService {
 
     @Override
     public MessageResponse consultar() throws Exception {
-        List<Campanha> campanhas = (List<Campanha>) campanhaRepository.findCampanhasVigentes(new Date());
-        List<CampanhaDTO> result = campanhas.parallelStream()
+        List<Campanha> campanhas = (List<Campanha>) campanhaRepository.findCampanhasVigentes();
+
+        if (campanhas == null || campanhas.isEmpty()) {
+            throw new RecursoNaoExistenteException();
+        }
+
+        List<CampanhaDTO> result = campanhas.stream()
                 .map(CampanhaAdapter::toCampanhaDTO)
                 .collect(Collectors.toList());
+
         return new MessageResponse(HttpStatus.OK, result);
     }
 
     @Override
     public MessageResponse consultar(Long id) throws Exception {
+
         Campanha campanha = campanhaRepository.findOneAtivo(id);
 
         if (campanha == null) {
@@ -64,6 +71,22 @@ public class CampanhaServiceImpl implements CampanhaService {
 
         List<CampanhaDTO> result = new ArrayList<>();
         result.add(CampanhaAdapter.toCampanhaDTO(campanha));
+
+        return new MessageResponse(HttpStatus.OK, result);
+    }
+
+    @Override
+    public MessageResponse consultarPorTime(Integer id) throws Exception {
+
+        List<Campanha> campanhas = (List<Campanha>) campanhaRepository.findCampanhasVigentesTime(id);
+
+        if (campanhas == null || campanhas.isEmpty()) {
+            throw new RecursoNaoExistenteException();
+        }
+
+        List<CampanhaDTO> result = campanhas.stream()
+                .map(CampanhaAdapter::toCampanhaDTO)
+                .collect(Collectors.toList());
 
         return new MessageResponse(HttpStatus.OK, result);
     }

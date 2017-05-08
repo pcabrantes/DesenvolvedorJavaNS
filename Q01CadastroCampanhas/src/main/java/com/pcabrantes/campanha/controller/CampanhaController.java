@@ -76,6 +76,19 @@ public class CampanhaController {
     }
 
     /**
+     * Método utilizado para consultar campanhas em vigência associadas a um time
+     *
+     * @return Um json contendo os dados da consulta
+     *
+     * @throws Exception
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/campanhas/time/{id}")
+    public MessageResponse consultarPorTime(@PathVariable(value = "id") Integer id) throws Exception {
+        logger.info("Serviço iniciado: GET /campanha");
+        return campanhaService.consultarPorTime(id);
+    }
+
+    /**
      * Método utilizado para consultar uma campanha através de seu id
      *
      * @return Um json contendo os dados da consulta

@@ -34,3 +34,15 @@
     Dado que é informada uma campanha com ID 12345678
     Quando a consulta por ID é invocada
     Entao é lançada uma exceção indicando que a campanha não foi encontrada
+
+
+  Cenario: Consultar campanhas associadas a determinado time
+    Dado que é informado um time com id 1
+    Quando a consulta por time é invocada
+    Entao sao retornadas campanhas vigentes associadas ao time
+
+
+  Cenario: Consultar campanhas por um time que não possui campanhas associadas
+    Dado que é informado um time com id 10000
+    Quando a consulta por time é invocada
+    Entao é lançada uma exceção indicando que a campanha não foi encontrada

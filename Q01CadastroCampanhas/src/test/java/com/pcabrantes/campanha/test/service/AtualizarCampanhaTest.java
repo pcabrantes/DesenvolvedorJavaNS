@@ -39,7 +39,7 @@ public class AtualizarCampanhaTest extends SpringTest {
 
     @Quando("^adicionar ao final de todos os nomes o texto \"([^\"]*)\", alterar o time para (\\d+) e invocar o serviço de atualizar$")
     public void adicionar_ao_final_de_todos_os_nomes_o_texto_alterar_o_time_para_e_invocar_o_serviço_de_atualizar(String sufixo, int arg2) throws Throwable {
-        response.getDados().parallelStream().forEach(c->{
+        response.getDados().stream().forEach(c->{
             c.setNome(c.getNome() + " " + sufixo);
             c.setIdTimeCoracao(10);
             try {

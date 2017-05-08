@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -81,5 +82,26 @@ public class ConsultarCampanhasTest extends SpringTest {
         assertTrue(excecao instanceof RecursoNaoExistenteException);
     }
 
+    @Dado("^que é informado um time com id (\\d+)$")
+    public void que_é_informado_um_time_com_id(int id) throws Throwable {
+        this.id = new Long(id);
+    }
 
+    @Quando("^a consulta por time é invocada$")
+    public void a_consulta_por_time_é_invocada() throws Throwable {
+        try {
+            response = campanhaService.consultarPorTime(id.intValue());
+        } catch (Exception ex) {
+            excecao = ex;
+        }
+    }
+
+    @Entao("^sao retornadas campanhas vigentes associadas ao time$")
+    public void sao_retornadas_campanhas_vigentes_associadas_ao_time() throws Throwable {
+        List<CampanhaDTO> campanhas = response.getDados().parallelStream()
+                .filter(c->!c.getIdTimeCoracao().equals(id.intValue()))
+                .collect(Collectors.toList());
+
+        assertTrue(campanhas.isEmpty());
+    }
 }
