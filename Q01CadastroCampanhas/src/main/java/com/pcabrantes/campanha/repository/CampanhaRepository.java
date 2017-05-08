@@ -48,6 +48,6 @@ public interface CampanhaRepository extends CrudRepository<Campanha,Long> {
      * @param id
      * @return campanha ativa associada ao id informado
      */
-    @Query("select c from Campanha c where c.id = ? and c.ativo = true")
-    Campanha findOneAtivo(Long id);
+    @Query("select c from Campanha c where c.id = :id and c.ativo = true")
+    Campanha findOneAtivo(@Param("id") Long id);
 }

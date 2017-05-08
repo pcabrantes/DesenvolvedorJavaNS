@@ -16,10 +16,17 @@ public class CampanhaAdapter {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
+    /**
+     * Converte de CampanhaDTO para Campanha
+     *
+     * @param campanhaDTO
+     * @return
+     * @throws ParseException
+     */
     public static Campanha fromCampanhaDTO(CampanhaDTO campanhaDTO) throws ParseException {
 
-        if (campanhaDTO == null || (campanhaDTO.getId() == null && campanhaDTO.getIdTimeCoracao() == null)
-                && campanhaDTO.getDataVigencia() == null) {
+        if (campanhaDTO == null || campanhaDTO.getIdTimeCoracao() == null
+                || campanhaDTO.getDataVigencia() == null) {
             throw new IllegalArgumentException();
         }
 
@@ -39,6 +46,12 @@ public class CampanhaAdapter {
         return campanha;
     }
 
+    /**
+     * Converte de Campanha para CampanhaDTO
+     *
+     * @param campanha
+     * @return
+     */
     public static CampanhaDTO toCampanhaDTO(Campanha campanha) {
 
         final CampanhaDTO dto = new CampanhaDTO();
