@@ -4,7 +4,10 @@ import com.pcabrantes.streams.exception.VogalNaoEncontradaException;
 import com.pcabrantes.streams.processador.Stream;
 
 /**
- * Created by pc on 08/05/17.
+ * Classe que busca o primeiro caractere Vogal, após uma consoante, onde a mesma é antecessora
+ * a uma vogal e não se repite no resto da stream
+ *
+ * @author Paulo Cesar Abrantes
  */
 public abstract class ProcessStream {
 
