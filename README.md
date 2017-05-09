@@ -8,6 +8,6 @@ As questões 1 e 2 foram implementadas utilizando a metodologia BDD (Behaviour D
   - Cadastro de Sócio Torcedor: 8889
 - Banco de dados H2
 - As aplicações foram divididas em 3 camadas:
-  - Controller: exposição dos serviços REST
-  - Service: comunicação com o controller e aplicação de regras de negócio
-  - Repository: comunicação com banco de dados
+  - Controller: exposição dos serviços REST
+  - Service: comunicação com o controller e aplicação de regras de negócio
+  - Repository: comunicação com banco de dados
